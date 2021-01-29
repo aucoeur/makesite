@@ -58,6 +58,7 @@ func main() {
 	// Template stuff
 	t := template.Must(template.ParseFiles("template.tmpl"))
 	t.ExecuteTemplate(w, "template.tmpl", string(fileContents))
+	check(err)
 
 	fmt.Printf(filename + ".html saved successfully")
 }
