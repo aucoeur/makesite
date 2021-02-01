@@ -23,23 +23,12 @@ func check(e error) {
 	}
 }
 
-// 	[TODO] Split into Title & Body
-// func createEntry(content string) {
-// 	fileSplit := strings.SplitN(string(content), "\n", 2)
-// 	e := &Entry{
-// 		Title: fileSplit[0],
-// 		Body:  fileSplit[1],
-// 	}
-// 	fmt.Printf("%+v", e)
-// 	return e
-// }
-
 func main() {
 
 	// Some sandbox set up
-	filePtr := flag.String("file", "", "a text file")
-	flag.Parse()
 	// file := "first-post.txt"
+	filePtr := flag.String("file", "sample.txt", "a text file")
+	flag.Parse()
 	file := *filePtr
 
 	ext := filepath.Ext(file)
