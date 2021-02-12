@@ -52,35 +52,53 @@ func createHTMLFromTemplate(file string, tmpl string) {
 	t.ExecuteTemplate(w, "template.tmpl", ent)
 	check(err)
 
-	fmt.Printf(filename + ".html saved successfully")
+	fmt.Println(filename + ".html saved successfully")
 }
 
 func main() {
 
+	// flags := flag.FlagSet()
 	// Flags
-	filePtr := flag.String("file", "sample.txt", "a text file to convert")
-	// dirPtr := flag.String("dir", ".", "a directory of text files to convert")
-	tDirPtr := flag.String("templates", "./templates", "a directory of templates")
+	filePtr := flag.String("file", "", "a text file to convert")
+	dirPtr := flag.String("dir", "", "a directory of text files to convert")
+	tmplDirPtr := flag.String("templates", "./templates", "a directory of templates")
 
 	flag.Parse()
 
 	// Point parameters to flags
-	files := *filePtr
-	// txtDir := *dirPtr
-	tmplDir := *tDirPtr
-	info, err := os.Stat(files)
-	check(err)
-	if info.IsDir() {
+	file := *filePtr
+	dir := *dirPtr
+	tmplDir := *tmplDirPtr
 
-		files, err := ioutil.ReadDir(files)
+	switch {
+	case flag.NFlag() == 0:
+		fmt.Println("a flag is required")
+		flag.PrintDefaults()
+		os.Exit(1)
+	case file != "":
+		info, err := os.Stat(file)
 		check(err)
-		for _, file := range files {
-			fmt.Printf("%s \n", file.Name())
-			// createHTMLFromTemplate(filepath.Abs(file), tmplDir)
+		if info.IsDir() {
+			fmt.Println("This appears to be a directory.  Please use -dir for directory, otherwise please choose a single file")
+		} else {
+			fmt.Printf("file: ")
+			createHTMLFromTemplate(file, tmplDir)
 		}
-	} else {
-		fmt.Printf("file: ")
-		createHTMLFromTemplate(files, tmplDir)
+	case dir != "":
+		dirInfo, err := os.Stat(dir)
+		check(err)
+
+		if dirInfo.IsDir() {
+			files, err := ioutil.ReadDir(dir)
+			check(err)
+			for _, f := range files {
+				fmt.Printf("file: %s", f.Name())
+				createHTMLFromTemplate(dir+"/"+f.Name(), tmplDir)
+			}
+		} else {
+			fmt.Println("This appears to be a file.  Please use -file for single file, otherwise please choose a directory")
+		}
+
 	}
 
 }

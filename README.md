@@ -70,7 +70,7 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 #### v1.1 Requirements
 
 - [x] Create 3 new `.txt` files for testing in the same directory as your project.
-- [ ] Add a new flag to the `makesite` command named `dir`.
+- [x] Add a new flag to the `makesite` command named `dir`.
 - [ ] Use the flag to find all `.txt` files in the given directory. Print them to `stdout`.
 - [ ] With the list of `.txt` files you found, generate an HTML page for each.
 - [ ] Run `./makesite --dir=.` to test in your local directory.
@@ -91,8 +91,8 @@ If you get stuck on any step, be sure to print the output to `stdout`!
 - [ ] Initialize Go modules in your project.
 - [ ] Add any third party library to your project to enhance it's functionality. Some ideas you might consider include **_(CHOOSE ONLY ONE)_**:
     - [ ] Translating page content using Google Translate.
-    - [ ] Parse Markdown (`.md`) files and transform them into HTML. `#` through `######` should translate to `<h1>` through `<h6>` elements.
-    - [ ] **_FILL IN THE BLANK_**: `I will use the __________________________________ library. The documentation is located at __________________________________. My goal is to use it to __________________________________.`
+    - [] Parse Markdown (`.md`) files and transform them into HTML. `#` through `######` should translate to `<h1>` through `<h6>` elements.
+      - [x] `I will use the `blackfriday` library. The documentation is located [here](https://pkg.go.dev/github.com/russross/blackfriday/v2). My goal is to use it to use it to transform Markdown files into HTML.`
 - [ ] **Add, commit, and push to GitHub**.
 
 ## Resources
