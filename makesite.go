@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 // Entry is blog post struct
@@ -71,10 +73,12 @@ func main() {
 	tmplDir := *tmplDirPtr
 
 	switch {
+	// If no flags are provided, show available flags and exit
 	case flag.NFlag() == 0:
 		fmt.Println("a flag is required")
 		flag.PrintDefaults()
 		os.Exit(1)
+		// If -file is specified, check if file or directory before attempting to create HTML
 	case file != "":
 		info, err := os.Stat(file)
 		check(err)
@@ -84,17 +88,34 @@ func main() {
 			fmt.Printf("file: ")
 			createHTMLFromTemplate(file, tmplDir)
 		}
+		// If -dir is specified, check if file or directory before recursively looking for files
 	case dir != "":
 		dirInfo, err := os.Stat(dir)
 		check(err)
 
 		if dirInfo.IsDir() {
-			files, err := ioutil.ReadDir(dir)
+			files := make([]string, 0)
+
+			// Only add to files array if path is not a directory
+			err := filepath.Walk(dir, func(path string, info os.FileInfo, e error) error {
+				if !info.IsDir() {
+					files = append(files, path)
+				}
+				return e
+			})
 			check(err)
-			for _, f := range files {
-				fmt.Printf("file: %s", f.Name())
-				createHTMLFromTemplate(dir+"/"+f.Name(), tmplDir)
+
+			// Loop through files and create for each file in array files
+			for _, file := range files {
+				fmt.Println("Creating html from: ", file)
+				createHTMLFromTemplate(file, tmplDir)
 			}
+
+			// Print to console with colors when finished
+			greenbold := color.New(color.FgGreen, color.Bold).SprintFunc()
+			bold := color.New(color.Bold).SprintFunc()
+			fmt.Printf("%s %s %s", greenbold("Success! Generated"), bold(len(files)), greenbold("pages."))
+
 		} else {
 			fmt.Println("This appears to be a file.  Please use -file for single file, otherwise please choose a directory")
 		}
