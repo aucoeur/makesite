@@ -1,7 +1,8 @@
-module makesite
+module github.com/aucoeur/makesite
 
-go 1.13
+go 1.15
 
-// require github.com/russross/blackfriday v1.6.0 // indirect
-
-require github.com/fatih/color v1.10.0 // direct
+require (
+	github.com/fatih/color v1.10.0 // direct
+	github.com/russross/blackfriday/v2 v2.1.0
+)
