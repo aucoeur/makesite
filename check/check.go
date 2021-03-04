@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-// Observe checks for error and panics if there is one.  Thanks gobyexample.com
-func Observe(e error) {
+// Report checks for error and panics if there is one.  Thanks gobyexample.com
+func Report(e error) {
 	if e != nil {
 		panic(e)
 	}
@@ -17,7 +18,7 @@ func Observe(e error) {
 func DoesMatch(flag, path string) bool {
 
 	info, err := os.Stat(path)
-	Observe(err)
+	Report(err)
 	switch {
 	case flag == "file" && info.IsDir():
 		fmt.Println("This appears to be a directory.  Please use -dir for directory, otherwise please choose a single file")
@@ -37,11 +38,21 @@ func GetFilesInDir(dir string) []string {
 
 	// Only add to files array if path is not a directory
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, e error) error {
-		if !info.IsDir() {
+		if !info.IsDir() && isTextFile(path) {
 			files = append(files, path)
 		}
 		return e
 	})
-	Observe(err)
+	Report(err)
 	return files
+}
+
+func isTextFile(path string) bool {
+	ext := strings.ToUpper(filepath.Ext(path))
+	if ext == ".TXT" || ext == ".MD" {
+		fmt.Printf("found %s\n", path)
+		return true
+	}
+	// fmt.Printf("skip %s\n", path)
+	return false
 }

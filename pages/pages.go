@@ -28,7 +28,7 @@ func CreateHTMLFromTemplate(file string, tmplDir string) {
 
 	// Reading
 	fileContents, err := ioutil.ReadFile(file)
-	check.Observe(err)
+	check.Report(err)
 
 	switch strings.ToUpper(ext) {
 	case ".MD":
@@ -45,14 +45,14 @@ func CreateHTMLFromTemplate(file string, tmplDir string) {
 		// Create new file
 		postDir := "posts/"
 		w, err := os.Create(filepath.Join(postDir, filename) + ".html")
-		check.Observe(err)
+		check.Report(err)
 
 		// Template stuff
 		t := template.Must(template.ParseFiles(filepath.Join(tmplDir, "template.tmpl"), filepath.Join(tmplDir, "header.tmpl")))
 		t.ExecuteTemplate(w, "template.tmpl", ent)
-		check.Observe(err)
+		check.Report(err)
 
-		fmt.Println(filename + ".html saved successfully")
+		fmt.Printf(filename + ".html saved successfully\n")
 	}
 
 }
@@ -60,7 +60,7 @@ func CreateHTMLFromTemplate(file string, tmplDir string) {
 // BatchCreateHTMLFromTemplate runs through files array iteratively and createsHTMLfromtemplate or HTML from MD
 func BatchCreateHTMLFromTemplate(files []string, tmplDir string) {
 	for _, file := range files {
-		fmt.Println("Creating html from: ", file)
+		fmt.Printf("Creating html from: %s ...", file)
 		CreateHTMLFromTemplate(file, tmplDir)
 	}
 
