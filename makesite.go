@@ -11,7 +11,6 @@ import (
 
 func main() {
 
-	// flags := flag.FlagSet()
 	// Flags
 	filePtr := flag.String("file", "", "a text file to convert")
 	dirPtr := flag.String("dir", "", "a directory of text files to convert")
